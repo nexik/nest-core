@@ -1,0 +1,9 @@
+{
+    "name": "nexik/nest",
+    "version": "0.0.1",
+    "require": {
+        "phalcon/incubator": "dev-master",
+        "codeception/codeception": "*",
+        "squizlabs/php_codesniffer": "1.*"
+    }
+}
