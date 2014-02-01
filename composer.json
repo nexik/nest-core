@@ -1,5 +1,5 @@
 {
-    "name": "nexik/nest",
+    "name": "nexik/nest-core",
     "version": "0.0.1",
     "require": {
         "phalcon/incubator": "dev-master",
