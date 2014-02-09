@@ -42,32 +42,11 @@ class Factory
     {
         $di = new PhalconDI();
 
+        $di->setShared('router', 'Nest\Router');
         $di->setShared('config', [
             'className' => 'Phalcon\Config\Adapter\Ini',
             'arguments' => [
                 ['type' => 'parameter', 'value' => $this->appPath . '/config/config.ini']
-            ]
-        ]);
-
-        $di->setShared(
-            'router',
-            [
-                'className' => 'Nest\Router\NativeArray',
-                'arguments' => [
-                    ['type' => 'parameter', 'value' => $this->appPath . '/config/routing.php']
-                ]
-            ]
-        );
-
-        $di->setShared('view', [
-            'className' => 'Nest\View',
-            'calls' => [
-                [
-                    'method' => 'registerVolt',
-                    'arguments' => [
-                        ['type' => 'parameter', 'value' => $di]
-                    ]
-                ]
             ]
         ]);
 
