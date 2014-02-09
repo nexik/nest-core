@@ -52,9 +52,9 @@ class Factory
         $di->setShared(
             'router',
             [
-                'className' => 'Nest\Router\Yaml',
+                'className' => 'Nest\Router\NativeArray',
                 'arguments' => [
-                    ['type' => 'parameter', 'value' => $this->appPath . '/config/routing.yml']
+                    ['type' => 'parameter', 'value' => $this->appPath . '/config/routing.php']
                 ]
             ]
         );

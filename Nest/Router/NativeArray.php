@@ -9,27 +9,32 @@
  */
 namespace Nest\Router;
 
-use Phalcon\Config\Adapter\Yaml as ConfigYaml;
-
 /**
- * Nest\Router\Yaml
+ * Nest\Router\NativeArray
  *
  * Routing based on yaml file
  *
  * @author  Tomasz Ślązok <tomek@sabaki.pl>
  */
-class Yaml extends \Phalcon\Mvc\Router
+class NativeArray extends \Phalcon\Mvc\Router
 {
     public function __construct($path)
     {
         parent::__construct(false);
 
         $this->setDefaultNamespace('App\Controller');
+        $routings = include $path;
 
-        foreach (new ConfigYaml($path) as $name => $routing) {
-            $this
-                ->add($routing->url, $routing->map)
-                ->setName($name);
+        foreach ($routings as $path => $definition) {
+            if (is_string($defintion)) {
+                $defintion = ['map' => $definition];
+            }
+
+            $route = $this->add($path, $definition['map']);
+
+            if (isset($definition['name'])) {
+                $route->setName($definition['name']);
+            }
         }
     }
 }
