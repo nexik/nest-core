@@ -11,7 +11,9 @@
 namespace Nest\Application;
 
 use Nest\Application\ApplicationInterface;
-use Phalcon\Mvc\Application;
+use Nest\DI\Factory as DIFactory;
+use Nest\DI\Services\Definitions\Strategy\Yaml as YamlStrategy;
+
 
 /**
  * Nest\Application\Http
@@ -20,7 +22,7 @@ use Phalcon\Mvc\Application;
  *
  * @author  Tomasz Ślązok <tomek@sabaki.pl>
  */
-class Http extends PhalconApplication implements ApplicationInterface
+class Http extends Base implements ApplicationInterface
 {
     /**
      * Flag if application is in production mode
@@ -29,9 +31,12 @@ class Http extends PhalconApplication implements ApplicationInterface
      */
     private $inProduction;
 
-    public function __construct($inProduction)
+    public function __construct($appPath, $inProduction)
     {
-        $this->inProduction = $inProduction;
+        $this->appPath = $appPath;
+
+        $diFactory = new DIFactory($appPath);
+        $this->di = $diFactory->build('http');
     }
 
     /**
