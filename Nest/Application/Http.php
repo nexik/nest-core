@@ -24,14 +24,7 @@ use Nest\DI\Services\Definitions\Strategy\Yaml as YamlStrategy;
  */
 class Http extends Base implements ApplicationInterface
 {
-    /**
-     * Flag if application is in production mode
-     *
-     * @var boolean
-     */
-    private $inProduction;
-
-    public function __construct($appPath, $inProduction)
+    public function __construct($appPath)
     {
         $this->appPath = $appPath;
 
