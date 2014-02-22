@@ -1,6 +1,15 @@
 {
     "name": "nexik/nest-core",
+    "description": "Nest core library for RAD with Phalcon framework",
     "version": "0.0.1",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Tomasz Ślązok",
+            "email": "tomek@sabaki.pl",
+            "role": "Developer"
+        }
+    ],
     "require": {
         "phalcon/incubator": "dev-master",
         "codeception/codeception": "*",
@@ -10,5 +19,5 @@
         "psr-4": {
             "Nest\\" : "Nest"
         }
-    }
+    },
 }
