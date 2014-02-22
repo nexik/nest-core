@@ -26,10 +26,9 @@ class Http extends Base implements ApplicationInterface
 {
     public function __construct($appPath)
     {
-        $this->appPath = $appPath;
-
         $diFactory = new DIFactory($appPath);
-        $this->di = $diFactory->build('http');
+
+        parent::__construct($diFactory->build('http'));
     }
 
     /**
@@ -40,15 +39,5 @@ class Http extends Base implements ApplicationInterface
     public function run()
     {
         echo $this->handle()->getContent();
-    }
-
-    /**
-     * Return flag if application is in production or not
-     *
-     * @return boolean
-     */
-    public function isInProduction()
-    {
-        return $this->inProduction;
     }
 }
