@@ -49,6 +49,24 @@ class Factory
                 ['type' => 'parameter', 'value' => $this->appPath . '/config/config.ini']
             ]
         ]);
+        $di->setShared('view', [
+            'className' => 'Nest\View',
+            'calls' => [
+                [
+                    'method' => 'setViewsDir',
+                    'arguments' => [
+                        ['type' => 'parameter', 'value' => $this->appPath . '/views']
+                    ]
+                ],
+                [
+                    'method' => 'registerVolt',
+                    'arguments' => [
+                        ['type' => 'parameter', 'value' => $this->appPath . '/cache/volt/'],
+                        ['type' => 'parameter', 'value' => $di]
+                    ]
+                ]
+            ]
+        ]);
 
         return $di;
     }

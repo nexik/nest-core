@@ -29,6 +29,8 @@ class Http extends Base implements ApplicationInterface
         $diFactory = new DIFactory($appPath);
 
         parent::__construct($diFactory->build('http'));
+
+        $this->configure();
     }
 
     /**

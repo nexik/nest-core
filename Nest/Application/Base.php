@@ -14,5 +14,4 @@ use Phalcon\Mvc\Application as PhalconApplication;
 
 abstract class Base extends PhalconApplication
 {
-
 }
