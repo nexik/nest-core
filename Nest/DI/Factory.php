@@ -42,13 +42,15 @@ class Factory
     {
         $di = new PhalconDI();
 
-        $di->setShared('router', 'Nest\Router');
+        $di->setShared('router', 'App\Router');
+
         $di->setShared('config', [
             'className' => 'Phalcon\Config\Adapter\Ini',
             'arguments' => [
                 ['type' => 'parameter', 'value' => $this->appPath . '/config/config.ini']
             ]
         ]);
+
         $di->setShared('view', [
             'className' => 'Nest\View',
             'calls' => [

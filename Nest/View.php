@@ -22,16 +22,15 @@ class View extends \Phalcon\Mvc\View
 {
     public function registerVolt($compiledPath, $di)
     {
-        $volt = new Volt($this, $di);
-        $volt->setOptions(
+        $this->registerEngines(
             [
-                'compiledPath' => $compiledPath,
-                'compiledExtension' => '.php',
-                'compiledSeparator' => '_',
+                '.volt' => function ($view, $di) use ($compiledPath) {
+                    $volt = new Volt($view, $di);
+                    $volt->setOptions(['compiledPath' => $compiledPath]);
+
+                    return $volt;
+                }
             ]
         );
-
-        $compiler = $volt->getCompiler();
-        $this->registerEngines(['.volt' => $volt]);
     }
 }

@@ -11,9 +11,7 @@
 namespace Nest\Application;
 
 use Nest\Application\ApplicationInterface;
-use Nest\DI\Factory as DIFactory;
-use Nest\DI\Services\Definitions\Strategy\Yaml as YamlStrategy;
-
+use Nest\DI\Factory;
 
 /**
  * Nest\Application\Http
@@ -22,13 +20,13 @@ use Nest\DI\Services\Definitions\Strategy\Yaml as YamlStrategy;
  *
  * @author  Tomasz Ślązok <tomek@sabaki.pl>
  */
-class Http extends Base implements ApplicationInterface
+abstract class Http extends Base implements ApplicationInterface
 {
     public function __construct($appPath)
     {
-        $diFactory = new DIFactory($appPath);
+        $factory = new Factory($appPath);
 
-        parent::__construct($diFactory->build('http'));
+        parent::__construct($factory->build('http'));
 
         $this->configure();
     }
