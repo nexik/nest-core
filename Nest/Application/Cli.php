@@ -12,7 +12,6 @@ namespace Nest\Application;
 
 use Nest\Application\ApplicationInterface;
 use Nest\DI\Factory;
-use Symfony\Component\Console\Application as SymfonyCli;
 
 /**
  * Nest\Application\Http
@@ -21,10 +20,8 @@ use Symfony\Component\Console\Application as SymfonyCli;
  *
  * @author  Tomasz Ślązok <tomek@sabaki.pl>
  */
-abstract class Cli extends Symfony\Component\Console\Application
+abstract class Cli extends \Symfony\Component\Console\Application
 {
-    private $cli;
-
     public function __construct($appPath)
     {
         parent::__construct();
