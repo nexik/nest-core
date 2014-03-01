@@ -16,15 +16,8 @@ namespace Nest;
  *
  * @author  Tomasz Ślązok <tomek@sabaki.pl>
  */
-class Router extends \Phalcon\Mvc\Router
+class Router extends \Phalcon\Mvc\Router\Annotations
 {
-    public function __construct($defaultRoutes = true)
-    {
-        parent::__construct($defaultRoutes);
-        $this->setDefaultNamespace('App\Controller');
-        $this->configure();
-    }
-
     /**
      * configure all routings in one place
      *
@@ -32,8 +25,12 @@ class Router extends \Phalcon\Mvc\Router
      *
      * @return void
      */
-    protected function configure()
+    public function configure()
     {
+    }
 
+    public function addResource($handler, $prefix = '/')
+    {
+        return parent::addResource('App\Controller\\' . $handler, $prefix);
     }
 }

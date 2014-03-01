@@ -9,45 +9,32 @@
  */
 namespace Nest\DI;
 
-use Nest\DI\Services\Definitions\Startegy\Yaml as YamlStrategy;
-use Phalcon\Di\FactoryDefault as PhalconDI;
-
 /**
  * Nest\DI\Factory
  *
- * Factory for building Dependency Injection Containers for Phalcon Appliaction
+ * Factory for building Dependency Injection Containers for Phalcon Applications
  *
  * @author  Tomasz Ślązok <tomek@sabaki.pl>
  */
 class Factory
 {
-    /**
-     * Path to application directory
-     *
-     * @var string
-     */
-    private $appPath;
-
-    /**
-     * Constructor
-     *
-     * @param Nest\DI\Services\Definitions $strategy
-     */
-    public function __construct($appPath)
+    public static function buildCli($appPath)
     {
-        $this->appPath = $appPath;
+        $di = new Phalcon\Di\FactoryDefault\CLI();
+
+        return $di;
     }
 
-    public function build($type)
+    public static function buildHttp($appPath)
     {
-        $di = new PhalconDI();
+        $di = new \Phalcon\Di\FactoryDefault();
 
         $di->setShared('router', 'App\Router');
 
         $di->setShared('config', [
             'className' => 'Phalcon\Config\Adapter\Ini',
             'arguments' => [
-                ['type' => 'parameter', 'value' => $this->appPath . '/config/config.ini']
+                ['type' => 'parameter', 'value' => $appPath . '/config/config.ini']
             ]
         ]);
 
@@ -57,13 +44,13 @@ class Factory
                 [
                     'method' => 'setViewsDir',
                     'arguments' => [
-                        ['type' => 'parameter', 'value' => $this->appPath . '/views']
+                        ['type' => 'parameter', 'value' => $appPath . '/views']
                     ]
                 ],
                 [
                     'method' => 'registerVolt',
                     'arguments' => [
-                        ['type' => 'parameter', 'value' => $this->appPath . '/cache/volt/'],
+                        ['type' => 'parameter', 'value' => $appPath . '/cache/volt/'],
                         ['type' => 'parameter', 'value' => $di]
                     ]
                 ]
