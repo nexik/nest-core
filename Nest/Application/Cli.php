@@ -14,7 +14,7 @@ use Nest\Application\ApplicationInterface;
 use Nest\DI\Factory;
 
 /**
- * Nest\Application\Http
+ * Nest\Application\Cli
  *
  * Base class for command line applications
  *
