@@ -18,25 +18,18 @@ namespace Nest\DI;
  */
 class Factory
 {
-    public static function buildCli($appPath)
+    public static function buildCli($path)
     {
-        $di = new \Phalcon\Di\FactoryDefault\CLI();
+        $di = self::initilizeShared(new \Phalcon\Di\FactoryDefault\CLI(), $path);
 
         return $di;
     }
 
-    public static function buildHttp($appPath)
+    public static function buildHttp($path)
     {
-        $di = new \Phalcon\Di\FactoryDefault();
+        $di = self::initilizeShared(new \Phalcon\Di\FactoryDefault(), $path);
 
         $di->setShared('router', 'App\Router');
-
-        $di->setShared('config', [
-            'className' => 'Phalcon\Config\Adapter\Ini',
-            'arguments' => [
-                ['type' => 'parameter', 'value' => $appPath . '/config/config.ini']
-            ]
-        ]);
 
         $di->setShared('view', [
             'className' => 'Nest\View',
@@ -44,14 +37,41 @@ class Factory
                 [
                     'method' => 'setViewsDir',
                     'arguments' => [
-                        ['type' => 'parameter', 'value' => $appPath . '/views']
+                        ['type' => 'parameter', 'value' => $path . '/views']
                     ]
                 ],
                 [
                     'method' => 'registerVolt',
                     'arguments' => [
-                        ['type' => 'parameter', 'value' => $appPath . '/cache/volt/'],
+                        ['type' => 'parameter', 'value' => $path . '/cache/volt/'],
                         ['type' => 'parameter', 'value' => $di]
+                    ]
+                ]
+            ]
+        ]);
+
+        return $di;
+    }
+
+    private static function initilizeShared($di, $path)
+    {
+        $di->setShared('config', [
+            'className' => 'Phalcon\Config\Adapter\Ini',
+            'arguments' => [
+                ['type' => 'parameter', 'value' => $path . '/config/config.ini']
+            ],
+            'calls' => [
+                [
+                    'method' => 'merge',
+                    'arguments' => [
+                        [
+                            'type' => 'parameter',
+                            'value' => [
+                                'paths' => [
+                                    'app' => $path
+                                ]
+                            ]
+                        ]
                     ]
                 ]
             ]
