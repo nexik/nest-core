@@ -20,7 +20,7 @@ use Nest\DI\Factory;
  *
  * @author  Tomasz Ślązok <tomek@sabaki.pl>
  */
-abstract class Http extends \Phalcon\Mvc\Applicatio implements ApplicationInterface
+abstract class Http extends \Phalcon\Mvc\Application implements ApplicationInterface
 {
     public function __construct($appPath)
     {
