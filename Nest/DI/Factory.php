@@ -20,7 +20,7 @@ class Factory
 {
     public static function buildCli($appPath)
     {
-        $di = new Phalcon\Di\FactoryDefault\CLI();
+        $di = new \Phalcon\Di\FactoryDefault\CLI();
 
         return $di;
     }
