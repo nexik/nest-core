@@ -29,7 +29,49 @@ class Factory
     {
         $di = self::initilizeShared(new \Phalcon\Di\FactoryDefault(), $path);
 
-        $di->setShared('router', 'App\Router');
+        $di->setShared('router', 'Nest\Router');
+
+        $di->setShared('eventsManager', [
+            'className' => 'Phalcon\Events\Manager',
+            'calls' => [
+                [
+                    'method' => 'attach',
+                    'arguments' => [
+                        [
+                            'type' => 'parameter',
+                            'value' => 'dispatch:beforeException',
+                        ],
+                        [
+                            'type' => 'parameter',
+                            'value' => function ($event, $dispatcher, $exception) {
+                                switch ($exception->getCode()) {
+                                    case \Phalcon\Dispatcher::EXCEPTION_HANDLER_NOT_FOUND:
+                                    case \Phalcon\Dispatcher::EXCEPTION_ACTION_NOT_FOUND:
+                                        $dispatcher->forward([
+                                           'controller' => 'App\Controller\Index',
+                                           'action'     => 'error404',
+                                        ]);
+
+                                        return false;
+                                }
+                            }
+                        ]
+                    ]
+                ]
+            ]
+        ]);
+
+        $di->setShared('dispatcher', [
+            'className' => 'Phalcon\Mvc\Dispatcher',
+            'calls' => [
+                [
+                    'method' => 'setEventsManager',
+                    'arguments' => [
+                        ['type' => 'service', 'name' => 'eventsManager']
+                    ]
+                ]
+            ]
+        ]);
 
         $di->setShared('view', [
             'className' => 'Nest\View',
