@@ -16,7 +16,7 @@ namespace Nest\Session\Adapter;
  *
  * @author  Tomasz Ślązok <tomek@sabaki.pl>
  */
-class Database extends \Phalcon\Session\Adapter\Database
+class Db extends \Phalcon\Session\Adapter\Database
 {
     /**
      * Constructor

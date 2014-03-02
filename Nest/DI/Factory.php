@@ -73,8 +73,18 @@ class Factory
             ]
         ]);
 
+
+        if ('Mysql' === $di->get('config')->db->adapter) {
+            $di->setShared('db', [
+                'className' => 'Nest\Db\Adapter\Pdo\Mysql',
+                'arguments' => [
+                    ['type' => 'service', 'name' => 'config']
+                ]
+            ]);
+        }
+
         $di->setShared('session', [
-            'className' => 'Nest\Session\Adapter\Database',
+            'className' => 'Nest\Session\Adapter\Db',
             'arguments' => [
                 ['type' => 'service', 'name' => 'db'],
                 ['type' => 'service', 'name' => 'config']
