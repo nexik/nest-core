@@ -73,6 +73,14 @@ class Factory
             ]
         ]);
 
+        $di->setShared('session', [
+            'className' => 'Nest\Session\Adapter\Database',
+            'arguments' => [
+                ['type' => 'service', 'name' => 'db'],
+                ['type' => 'service', 'name' => 'config']
+            ],
+        ]);
+
         $di->setShared('view', [
             'className' => 'Nest\View',
             'calls' => [
