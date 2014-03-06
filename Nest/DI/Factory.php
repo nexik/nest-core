@@ -73,7 +73,6 @@ class Factory
             ]
         ]);
 
-
         if ('Mysql' === $di->get('config')->db->adapter) {
             $di->setShared('db', [
                 'className' => 'Nest\Db\Adapter\Pdo\Mysql',
@@ -91,8 +90,29 @@ class Factory
             ],
         ]);
 
+        $di->setShared('volt', [
+            'className' => 'Phalcon\Mvc\View\Engine\Volt',
+            'arguments' => [
+                ['type' => 'service', 'name' => 'view'],
+                ['type' => 'parameter', 'value' => $di]
+            ],
+            'calls' => [
+                [
+                    'method' => 'setOptions',
+                    'arguments' => [
+                        [
+                            'type' => 'parameter',
+                            'value' => [
+                                'compiledPath' => sprintf('%s/cache/volt/', $path),
+                            ]
+                        ]
+                    ]
+                ]
+            ]
+        ]);
+
         $di->setShared('view', [
-            'className' => 'Nest\View',
+            'className' => 'Phalcon\Mvc\View',
             'calls' => [
                 [
                     'method' => 'setViewsDir',
@@ -101,10 +121,9 @@ class Factory
                     ]
                 ],
                 [
-                    'method' => 'registerVolt',
+                    'method' => 'registerEngines',
                     'arguments' => [
-                        ['type' => 'parameter', 'value' => $path . '/cache/volt/'],
-                        ['type' => 'parameter', 'value' => $di]
+                        ['type' => 'parameter', 'value' => ['.volt' => 'volt']]
                     ]
                 ]
             ]

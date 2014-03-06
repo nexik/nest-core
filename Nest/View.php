@@ -20,17 +20,4 @@ use Phalcon\Mvc\View\Engine\Volt;
  */
 class View extends \Phalcon\Mvc\View
 {
-    public function registerVolt($compiledPath, $di)
-    {
-        $this->registerEngines(
-            [
-                '.volt' => function ($view, $di) use ($compiledPath) {
-                    $volt = new Volt($view, $di);
-                    $volt->setOptions(['compiledPath' => $compiledPath]);
-
-                    return $volt;
-                }
-            ]
-        );
-    }
 }
