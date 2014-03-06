@@ -26,6 +26,7 @@ class Db extends \Phalcon\Session\Adapter\Database
      */
     public function __construct($db, $config)
     {
+        session_name($config->session->cookie);
         session_set_cookie_params(
             $config->session->timeout,
             '/',
@@ -34,7 +35,7 @@ class Db extends \Phalcon\Session\Adapter\Database
         );
 
         parent::__construct([
-            'connection' => $db,
+            'db' => $db,
             'table' => $config->session->table
         ]);
 

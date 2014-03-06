@@ -24,9 +24,9 @@ class Mysql extends \Phalcon\Db\Adapter\Pdo\Mysql
      */
     public function __construct($config)
     {
-        parent::__construct($config->database->toArray());
+        parent::__construct($config->db->toArray());
 
-        if ('utf8' === $config->database->charset) {
+        if ('utf8' === $config->db->charset) {
             $this->execute('SET NAMES UTF8');
         }
     }
@@ -34,7 +34,7 @@ class Mysql extends \Phalcon\Db\Adapter\Pdo\Mysql
     public function enableLogs($logger, $eventsManager)
     {
         //Listen all the database events
-        $eventsManager->attach('db', function($event, $connection) use ($logger) {
+        $eventsManager->attach('db', function ($event, $connection) use ($logger) {
             if ($event->getType() == 'beforeQuery') {
                 $sql = $connection->getSQLStatement();
                 $variables = $connection->getSQLVariables();

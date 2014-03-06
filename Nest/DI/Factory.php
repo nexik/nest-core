@@ -97,7 +97,7 @@ class Factory
                 [
                     'method' => 'setViewsDir',
                     'arguments' => [
-                        ['type' => 'parameter', 'value' => $path . '/views']
+                        ['type' => 'parameter', 'value' => $path . '/views/']
                     ]
                 ],
                 [
