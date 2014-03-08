@@ -134,27 +134,26 @@ class Factory
 
     private static function initilizeShared($di, $path)
     {
-        $di->setShared('config', [
-            'className' => 'Phalcon\Config\Adapter\Ini',
-            'arguments' => [
-                ['type' => 'parameter', 'value' => $path . '/config/config.ini']
-            ],
-            'calls' => [
-                [
-                    'method' => 'merge',
-                    'arguments' => [
-                        [
-                            'type' => 'parameter',
-                            'value' => [
-                                'paths' => [
-                                    'app' => $path
-                                ]
-                            ]
-                        ]
-                    ]
-                ]
-            ]
-        ]);
+        $di->setShared('fs', 'Symfony\Component\Filesystem\Filesystem');
+        $di->setShared('yaml_parser', 'Symfony\Component\Yaml\Parser');
+
+        $di->setShared('config', function () use ($di) {
+            if (false === file_exists($path.'/cache/config/config.php')) {
+                $yaml = file_get_contents($path.'/config/config.yml');
+                $config = $di['yaml_parser']->parse($yaml);
+
+                $di['fs']->dumpFile(
+                    $path . "/cache/config/config.php",
+                    "<?php" . "\n" . "return " . var_export($config) . ";"
+                );
+            } else {
+                $config = include $path . '/cache/config/config.php';
+            }
+
+            $config['paths']['app'] = $path;
+
+            return new \Phalcon\Config($config);
+        });
 
         return $di;
     }
