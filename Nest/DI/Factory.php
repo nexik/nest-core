@@ -138,21 +138,18 @@ class Factory
         $di->setShared('yaml_parser', 'Symfony\Component\Yaml\Parser');
 
         $di->setShared('config', function () use ($di, $path) {
-            if (false === file_exists($path.'/cache/config/config.php')) {
-                $yaml = file_get_contents($path.'/config/config.yml');
-                $config = $di['yaml_parser']->parse($yaml);
+            $cachePath = sprintf("%s/cache/config/config.php", $path);
 
-                $di['fs']->dumpFile(
-                    $path . "/cache/config/config.php",
-                    "<?php" . "\n" . "return " . var_export($config, true) . ";"
-                );
+            if (false === file_exists($cachePath)) {
+                $yamlPath = sprintf("%s/config/config.yml", $path);
+                $config = $di['yaml_parser']->parse(file_get_contents($yamlPath));
+
+                $di['fs']->dumpFile($cachePath, sprintf("<?php\nreturn %s;", var_export($config, true)));
             } else {
-                $config = include $path . '/cache/config/config.php';
+                $config = include $cachePath;
             }
 
-            $config['paths']['app'] = $path;
-
-            return new \Phalcon\Config($config);
+            return new \Phalcon\Config(array_merge($config, ['paths' => ['app' => $path]]));
         });
 
         return $di;
