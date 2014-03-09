@@ -10,7 +10,6 @@
 
 namespace Nest\Application;
 
-use Nest\Application\ApplicationInterface;
 use Nest\DI\Factory;
 
 /**

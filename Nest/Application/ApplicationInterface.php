@@ -19,5 +19,8 @@ namespace Nest\Application;
  */
 interface ApplicationInterface
 {
+    /**
+     * @return string|null
+     */
     public function run();
 }
