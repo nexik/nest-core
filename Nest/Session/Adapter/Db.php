@@ -36,7 +36,7 @@ class Db extends \Phalcon\Session\Adapter\Database
 
         parent::__construct([
             'db' => $db,
-            'table' => $config->session->table
+            'table' => $config->session->adpater->table
         ]);
 
         $this->start();

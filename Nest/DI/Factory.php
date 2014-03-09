@@ -137,14 +137,14 @@ class Factory
         $di->setShared('fs', 'Symfony\Component\Filesystem\Filesystem');
         $di->setShared('yaml_parser', 'Symfony\Component\Yaml\Parser');
 
-        $di->setShared('config', function () use ($di) {
+        $di->setShared('config', function () use ($di, $path) {
             if (false === file_exists($path.'/cache/config/config.php')) {
                 $yaml = file_get_contents($path.'/config/config.yml');
                 $config = $di['yaml_parser']->parse($yaml);
 
                 $di['fs']->dumpFile(
                     $path . "/cache/config/config.php",
-                    "<?php" . "\n" . "return " . var_export($config) . ";"
+                    "<?php" . "\n" . "return " . var_export($config, true) . ";"
                 );
             } else {
                 $config = include $path . '/cache/config/config.php';
