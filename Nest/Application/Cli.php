@@ -22,6 +22,11 @@ use Nest\DI\Factory;
  */
 abstract class Cli extends \Symfony\Component\Console\Application
 {
+    /**
+     * @var Phalcon\Di\FactoryDefault\CLI
+     */
+    protected $di;
+
     public function __construct($appPath)
     {
         parent::__construct();
