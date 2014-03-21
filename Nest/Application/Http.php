@@ -22,17 +22,6 @@ use Nest\DI\Factory;
  */
 abstract class Http extends \Phalcon\Mvc\Application implements ApplicationInterface
 {
-    public function __construct($appPath)
-    {
-        parent::__construct(Factory::buildHttp($appPath));
-
-        $this->configure();
-        $this->routing($this->router);
-    }
-
-    abstract protected function configure();
-    abstract protected function routing($router);
-
     /**
      * Run application and output result to the browser
      *
