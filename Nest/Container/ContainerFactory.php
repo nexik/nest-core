@@ -25,7 +25,16 @@ class ContainerFactory
      */
     public static function build()
     {
-        return new DI();
+        $container = new DI();
+
+        $container->setShared('dispatcher', 'Phalcon\Mvc\Dispatcher');
+        $container->setShared('request', 'Phalcon\Http\Request');
+        $container->setShared('response', 'Phalcon\Http\Response');
+        $container->setShared('router', 'Nest\Router');
+        $container->setShared('filesystem', 'Symfony\Component\Filesystem\Filesystem');
+        $container->setShared('yaml', 'Symfony\Component\Yaml\Parser');
+
+        return $container;
     }
 
 } 
