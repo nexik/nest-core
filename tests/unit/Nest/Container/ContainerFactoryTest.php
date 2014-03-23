@@ -68,8 +68,8 @@ class ContainerFactoryTest extends Test
         // Then: Expect to router service be set as shared
         $this->assertTrue($container->getService('router')->isShared());
 
-        // Then: Expect to have router that implements Nest\Router
-        $this->assertInstanceOf('Nest\Router', $container->get('router'));
+        // Then: Expect to have router that implements Phalcon\Mvc\RouterInterface
+        $this->assertInstanceOf('Phalcon\Mvc\RouterInterface', $container->get('router'));
 
         // Cleanup: Reset default Phalcon DI instance
         DI::reset();

@@ -10,8 +10,8 @@
 
 namespace Nest\Application;
 
-use Nest\Application\ApplicationInterface;
-use Nest\DI\Factory;
+use Nest\Container\ContainerFactory;
+use Phalcon\Config;
 
 /**
  * Nest\Application\Http
@@ -20,8 +20,47 @@ use Nest\DI\Factory;
  *
  * @author  Tomasz Ślązok <tomek@sabaki.pl>
  */
-abstract class Http extends \Phalcon\Mvc\Application implements ApplicationInterface
+class Http extends \Phalcon\Mvc\Application implements ApplicationInterface
 {
+    /**
+     * @var \Phalcon\DI
+     */
+    private $container;
+
+    private $config;
+
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->container = ContainerFactory::build();
+        $this->config = new Config();
+        $this->configure();
+    }
+
+    /**
+     * Template Pattern to be implemented in child class
+     */
+    protected function configure()
+    {
+    }
+
+    protected function loadConfig($path)
+    {
+        $this->config->merge(ConfigFactory::buildFromPath($path));
+    }
+
+    /**
+     * Get dependency injection container
+     *
+     * @return \Phalcon\DI
+     */
+    public function getContainer()
+    {
+        return $this->container;
+    }
+
     /**
      * Run application and output result to the browser
      *

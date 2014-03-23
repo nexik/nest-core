@@ -30,7 +30,7 @@ class ContainerFactory
         $container->setShared('dispatcher', 'Phalcon\Mvc\Dispatcher');
         $container->setShared('request', 'Phalcon\Http\Request');
         $container->setShared('response', 'Phalcon\Http\Response');
-        $container->setShared('router', 'Nest\Router');
+        $container->setShared('router', 'Phalcon\Mvc\Router');
         $container->setShared('filesystem', 'Symfony\Component\Filesystem\Filesystem');
         $container->setShared('yaml', 'Symfony\Component\Yaml\Parser');
 
