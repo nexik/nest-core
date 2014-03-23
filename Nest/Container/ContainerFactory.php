@@ -33,6 +33,12 @@ class ContainerFactory
         $container->setShared('router', 'Phalcon\Mvc\Router');
         $container->setShared('filesystem', 'Symfony\Component\Filesystem\Filesystem');
         $container->setShared('yaml', 'Symfony\Component\Yaml\Parser');
+        $container->setShared('configFactory', [
+            'className' => 'Nest\Config\ConfigFactory',
+            'arguments' => [
+                ['type' => 'service', 'name' => 'yaml']
+            ]
+        ]);
 
         return $container;
     }

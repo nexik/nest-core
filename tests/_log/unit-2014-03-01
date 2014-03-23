@@ -1,7 +1,0 @@
-[2014-03-01 12:20:08] Nest\RouterTest::testAddResourceNamespacePrefix.ALERT: Argument #2 of PHPUnit_Framework_Assert::assertCount() must be a countable [] []
-[2014-03-01 12:20:08] Nest\RouterTest::testAddResourceNamespacePrefix.INFO: # ERROR # [] []
-[2014-03-01 12:20:08] Nest\RouterTest::testAddResourceNamespacePrefix.INFO: PASSED [] []
-[2014-03-01 12:30:41] Nest\RouterTest::testAddResourceNamespacePrefix.ALERT: Undefined offset: 2 [] []
-[2014-03-01 12:30:41] Nest\RouterTest::testAddResourceNamespacePrefix.INFO: # ERROR # [] []
-[2014-03-01 12:30:41] Nest\RouterTest::testAddResourceNamespacePrefix.INFO: PASSED [] []
-[2014-03-01 12:30:51] Nest\RouterTest::testAddResourceNamespacePrefix.INFO: PASSED [] []

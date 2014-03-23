@@ -1,0 +1,6 @@
+{
+    "foo": "bar",
+    "section": {
+        "bar": "foo"
+    }
+}

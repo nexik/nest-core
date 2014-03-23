@@ -48,7 +48,10 @@ class Http extends \Phalcon\Mvc\Application implements ApplicationInterface
 
     protected function loadConfig($path)
     {
-        $this->config->merge(ConfigFactory::buildFromPath($path));
+        $configFactory = $this->getContainer()->get('configFactory');
+        $config = $configFactory->buildFromPath($path);
+
+        $this->config->merge($config);
     }
 
     /**
