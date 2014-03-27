@@ -23,11 +23,6 @@ use Phalcon\Config;
 class Http extends \Phalcon\Mvc\Application implements ApplicationInterface
 {
     /**
-     * @var \Phalcon\DI
-     */
-    private $container;
-
-    /**
      * @var \Phalcon\Config
      */
     private $config;
@@ -37,7 +32,8 @@ class Http extends \Phalcon\Mvc\Application implements ApplicationInterface
      */
     public function __construct()
     {
-        $this->container = ContainerFactory::build();
+        parent::__construct(ContainerFactory::build());
+
         $this->config = new Config();
         $this->configure();
     }
@@ -64,7 +60,7 @@ class Http extends \Phalcon\Mvc\Application implements ApplicationInterface
      */
     public function getContainer()
     {
-        return $this->container;
+        return $this->getDI();
     }
 
     /**
