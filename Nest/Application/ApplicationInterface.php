@@ -25,7 +25,7 @@ interface ApplicationInterface
     public function run();
 
     /**
-     * @return object
+     * @return \Phalcon\Config
      */
     public function getConfig();
 }
