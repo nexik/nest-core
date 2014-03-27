@@ -36,7 +36,11 @@ class ConfigFactory
             case 'json':
                 return new JsonAdapter($path);
             case 'php':
-                return new PhpAdapter($path);
+                if (class_exists('Phalcon\Config\Adapter\Php')) {
+                    return new PhpAdapter($path);
+                } else {
+                    return new Config(require $path);
+                }
             case 'yml':
                 return new YamlAdapter($path, $this->yaml);
             default:

@@ -27,6 +27,9 @@ class Http extends \Phalcon\Mvc\Application implements ApplicationInterface
      */
     private $container;
 
+    /**
+     * @var \Phalcon\Config
+     */
     private $config;
 
     /**
@@ -51,7 +54,7 @@ class Http extends \Phalcon\Mvc\Application implements ApplicationInterface
         $configFactory = $this->getContainer()->get('configFactory');
         $config = $configFactory->buildFromPath($path);
 
-        $this->config->merge($config);
+        $this->getConfig()->merge($config);
     }
 
     /**
@@ -62,6 +65,14 @@ class Http extends \Phalcon\Mvc\Application implements ApplicationInterface
     public function getContainer()
     {
         return $this->container;
+    }
+
+    /**
+     * @return \Phalcon\Config
+     */
+    public function getConfig()
+    {
+        return $this->config;
     }
 
     /**

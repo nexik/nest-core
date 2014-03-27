@@ -23,4 +23,9 @@ interface ApplicationInterface
      * @return string|null
      */
     public function run();
+
+    /**
+     * @return object
+     */
+    public function getConfig();
 }
