@@ -28,4 +28,10 @@ interface ApplicationInterface
      * @return \Phalcon\Config
      */
     public function getConfig();
+
+    /**
+     * @param $path
+     * @return void
+     */
+    public function loadConfig($path);
 }

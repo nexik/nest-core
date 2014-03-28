@@ -27,6 +27,16 @@ class HttpTest extends Test
 
         $this->assertInstanceOf('Phalcon\Config', $app->getConfig());
     }
+
+    public function testLoadConfig()
+    {
+        $app = new HttpTestImplementation();
+        $this->assertFalse($app->getConfig()->offsetExists('foo'));
+
+        $app->loadConfig(DATA_PATH . '/config/base.yml');
+        $this->assertTrue($app->getConfig()->offsetExists('foo'));
+        $this->assertEquals('bar', $app->getConfig()->get('foo'));
+    }
 }
 
 class HttpTestImplementation extends Http
