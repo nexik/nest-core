@@ -23,6 +23,11 @@ use Symfony\Component\Yaml\Parser as Yaml;
  */
 class ConfigFactory 
 {
+    /**
+     * @var \Symfony\Component\Yaml\Parser
+     */
+    private $yaml;
+
     public function __construct(Yaml $yaml)
     {
         $this->yaml = $yaml;
