@@ -25,11 +25,6 @@ interface ApplicationInterface
     public function run();
 
     /**
-     * @return \Phalcon\Config
-     */
-    public function getConfig();
-
-    /**
      * @param $path
      * @return void
      */

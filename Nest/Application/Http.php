@@ -26,16 +26,25 @@ class Http extends Application implements ApplicationInterface
     /**
      * @var \Phalcon\Config
      */
-    private $config;
+    protected $config;
+
+    /**
+     * @var \Nest\Container\ContainerFactory
+     */
+    private $factory;
 
     /**
      * Constructor
      */
     public function __construct()
     {
-        parent::__construct(ContainerFactory::build());
+        $factory   = new ContainerFactory();
+        $container = $factory->build(__DIR__ . '/../../config/services.yml');
 
-        $this->config = new Config();
+        parent::__construct($container);
+
+        $this->config  = new Config();
+        $this->factory = $factory;
 
         if (method_exists($this, 'configure')) {
             $this->configure();
@@ -62,7 +71,12 @@ class Http extends Application implements ApplicationInterface
             $config = $this->parseConfig($path);
         }
 
-        $this->getConfig()->merge($config);
+        $this->config->merge($config);
+    }
+
+    public function loadServices($path)
+    {
+        $this->factory->loadServices($this->getContainer(), $path);
     }
 
     private function parseConfig($path)
@@ -89,14 +103,6 @@ class Http extends Application implements ApplicationInterface
     }
 
     /**
-     * @return \Phalcon\Mvc\Router
-     */
-    public function getRouter()
-    {
-        return $this->getContainer()->get('router');
-    }
-
-    /**
      * Get dependency injection container
      *
      * @return \Phalcon\DI
@@ -104,14 +110,6 @@ class Http extends Application implements ApplicationInterface
     public function getContainer()
     {
         return $this->getDI();
-    }
-
-    /**
-     * @return \Phalcon\Config
-     */
-    public function getConfig()
-    {
-        return $this->config;
     }
 
     /**

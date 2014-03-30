@@ -1,0 +1,24 @@
+configFactory:
+    className: Nest\Config\ConfigFactory
+    arguments:
+        - { type: service, name: yaml }
+
+dispatcher:
+    className: Phalcon\Mvc\Dispatcher
+
+request:
+    className: Phalcon\Http\Request
+
+response:
+    className: Phalcon\Http\Response
+
+router:
+    className: Phalcon\Mvc\Router
+
+routingParser:
+    className: Nest\Mvc\Router\RoutingParser
+    arguments:
+        - { type: service, name: yaml }
+
+view:
+    className: Phalcon\Mvc\View

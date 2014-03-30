@@ -21,32 +21,53 @@ use Phalcon\DI;
 class ContainerFactory 
 {
     /**
+     * @param $path
      * @return \Phalcon\DI
      */
-    public static function build()
+    public function build($path)
     {
         $container = new DI();
-
-        $container->setShared('configFactory', [
-            'className' => 'Nest\Config\ConfigFactory',
-            'arguments' => [
-                ['type' => 'service', 'name' => 'yaml']
-            ]
-        ]);
-        $container->setShared('dispatcher', 'Phalcon\Mvc\Dispatcher');
-        $container->setShared('filesystem', 'Symfony\Component\Filesystem\Filesystem');
-        $container->setShared('response', 'Phalcon\Http\Response');
-        $container->setShared('request', 'Phalcon\Http\Request');
-        $container->setShared('router', 'Phalcon\Mvc\Router');
-        $container->setShared('routingParser', [
-            'className' => 'Nest\Mvc\Router\RoutingParser',
-            'arguments' => [
-                ['type' => 'service', 'name' => 'yaml']
-            ]
-        ]);
         $container->setShared('yaml', 'Symfony\Component\Yaml\Parser');
-        $container->setShared('view', 'Phalcon\Mvc\View');
+
+        return self::loadServices($container, $path);
+    }
+
+    /**
+     * @param \Phalcon\DI $container
+     * @param string      $path
+     * @return \Phalcon\DI
+     */
+    public function loadServices(DI $container, $path)
+    {
+        if ($container->has('cache')) {
+            $cache    = $container->get('cache');
+            $key      = sprintf('services_defs_%s', md5($path));
+            $services = $cache->get($key);
+
+            if (null === $services) {
+                $services = $this->parseServices($container, $path);
+            }
+        } else {
+            $services = $this->parseServices($container, $path);
+        }
+
+        foreach ($services as $name => $definition) {
+            $container->setShared($name, $definition);
+        }
 
         return $container;
+    }
+
+    /**
+     * @param DI     $container
+     * @param string $path
+     * @return array
+     */
+    private static function parseServices(DI $container, $path)
+    {
+        $parser = $container->get('yaml');
+        $yaml = file_get_contents($path);
+
+        return $parser->parse($yaml);
     }
 } 
