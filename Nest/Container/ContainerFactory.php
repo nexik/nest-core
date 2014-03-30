@@ -27,21 +27,26 @@ class ContainerFactory
     {
         $container = new DI();
 
-        $container->setShared('dispatcher', 'Phalcon\Mvc\Dispatcher');
-        $container->setShared('request', 'Phalcon\Http\Request');
-        $container->setShared('response', 'Phalcon\Http\Response');
-        $container->setShared('router', 'Phalcon\Mvc\Router');
-        $container->setShared('filesystem', 'Symfony\Component\Filesystem\Filesystem');
-        $container->setShared('yaml', 'Symfony\Component\Yaml\Parser');
-        $container->setShared('view', 'Phalcon\Mvc\View');
         $container->setShared('configFactory', [
             'className' => 'Nest\Config\ConfigFactory',
             'arguments' => [
                 ['type' => 'service', 'name' => 'yaml']
             ]
         ]);
+        $container->setShared('dispatcher', 'Phalcon\Mvc\Dispatcher');
+        $container->setShared('filesystem', 'Symfony\Component\Filesystem\Filesystem');
+        $container->setShared('response', 'Phalcon\Http\Response');
+        $container->setShared('request', 'Phalcon\Http\Request');
+        $container->setShared('router', 'Phalcon\Mvc\Router');
+        $container->setShared('routingParser', [
+            'className' => 'Nest\Mvc\Router\RoutingParser',
+            'arguments' => [
+                ['type' => 'service', 'name' => 'yaml']
+            ]
+        ]);
+        $container->setShared('yaml', 'Symfony\Component\Yaml\Parser');
+        $container->setShared('view', 'Phalcon\Mvc\View');
 
         return $container;
     }
-
 } 

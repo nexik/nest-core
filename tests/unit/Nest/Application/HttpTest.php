@@ -31,11 +31,25 @@ class HttpTest extends Test
     public function testLoadConfig()
     {
         $app = new HttpTestImplementation();
-        $this->assertFalse($app->getConfig()->offsetExists('foo'));
 
+        $this->assertFalse($app->getConfig()->offsetExists('foo'));
         $app->loadConfig(DATA_PATH . '/config/base.yml');
         $this->assertTrue($app->getConfig()->offsetExists('foo'));
         $this->assertEquals('bar', $app->getConfig()->get('foo'));
+    }
+
+    public function testLoadRouting()
+    {
+        $app = new HttpTestImplementation();
+
+        $router = $app->getContainer()->get('router');
+        $router->clear();
+        $router->handle('/file/hash/file.jpg');
+        $this->assertFalse($router->wasMatched());
+
+        $app->loadRouting(DATA_PATH . '/config/routing.yml');
+        $router->handle('/file/hash/file.jpg');
+        $this->assertTrue($router->wasMatched());
     }
 }
 

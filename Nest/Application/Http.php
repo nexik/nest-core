@@ -12,6 +12,7 @@ namespace Nest\Application;
 
 use Nest\Container\ContainerFactory;
 use Phalcon\Config;
+use Phalcon\Mvc\Application;
 
 /**
  * Nest\Application\Http
@@ -20,7 +21,7 @@ use Phalcon\Config;
  *
  * @author  Tomasz Ślązok <tomek@sabaki.pl>
  */
-class Http extends \Phalcon\Mvc\Application implements ApplicationInterface
+class Http extends Application implements ApplicationInterface
 {
     /**
      * @var \Phalcon\Config
@@ -45,12 +46,58 @@ class Http extends \Phalcon\Mvc\Application implements ApplicationInterface
     {
     }
 
+    /**
+     * Load Config (merge with current one) from given path
+     *
+     * @param $path
+     */
     public function loadConfig($path)
     {
-        $configFactory = $this->getContainer()->get('configFactory');
-        $config = $configFactory->buildFromPath($path);
+        if ($this->getContainer()->has('cache')) {
+            $cache  = $this->getContainer()->get('cache');
+            $key    = sprintf('config_%s', md5($path));
+            $config = $cache->get($key);
+
+            if (null === $config) {
+                $config = $this->parseConfig($path);
+                $cache->save($key, $config);
+            }
+        } else {
+            $config = $this->parseConfig($path);
+        }
 
         $this->getConfig()->merge($config);
+    }
+
+    private function parseConfig($path)
+    {
+        $configFactory = $this->getContainer()->get('configFactory');
+
+        return $configFactory->buildFromPath($path);
+    }
+
+    /**
+     * Load Routing (merge with current one) from given path
+     * @param $path
+     */
+    public function loadRouting($path)
+    {
+        $parser = $this->getContainer()->get('routingParser');
+
+        foreach ($parser->parseFromPath($path) as $name => $definition) {
+            $this->getContainer()
+                ->get('router')
+                ->add($definition['url'], $definition['action'])
+                ->setName($name);
+        }
+    }
+
+    /**
+     * @return \Phalcon\Mvc\Router
+     */
+    public function getRouter()
+    {
+        return $this->getContainer()->get('router');
     }
 
     /**
