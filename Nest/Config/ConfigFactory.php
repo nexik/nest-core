@@ -10,7 +10,6 @@ namespace Nest\Config;
 use Phalcon\Config;
 use Phalcon\Config\Adapter\Ini as IniAdapter;
 use Phalcon\Config\Adapter\Json as JsonAdapter;
-use Phalcon\Config\Adapter\Php as PhpAdapter;
 use Nest\Config\Adapter\Yaml as YamlAdapter;
 use Symfony\Component\Yaml\Parser as Yaml;
 
@@ -40,16 +39,10 @@ class ConfigFactory
                 return new IniAdapter($path);
             case 'json':
                 return new JsonAdapter($path);
-            case 'php':
-                if (class_exists('Phalcon\Config\Adapter\Php')) {
-                    return new PhpAdapter($path);
-                } else {
-                    return new Config(require $path);
-                }
             case 'yml':
                 return new YamlAdapter($path, $this->yaml);
             default:
-                return new Config();
+                return new Config(require $path);
         }
     }
 
