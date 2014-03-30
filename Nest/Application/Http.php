@@ -36,14 +36,10 @@ class Http extends Application implements ApplicationInterface
         parent::__construct(ContainerFactory::build());
 
         $this->config = new Config();
-        $this->configure();
-    }
 
-    /**
-     * Template Pattern to be implemented in child class
-     */
-    protected function configure()
-    {
+        if (method_exists($this, 'configure')) {
+            $this->configure();
+        }
     }
 
     /**
