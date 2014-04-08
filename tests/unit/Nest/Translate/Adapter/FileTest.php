@@ -7,20 +7,22 @@
  *
  * @license    MIT
  */
-namespace Nest\Config\Adapter;
 
-use Phalcon\Config;
-use Symfony\Component\Yaml\Yaml as YamlParser;
+namespace Nest\Translate\Adapter;
+
+use Codeception\TestCase\Test;
 
 /**
- * Nest\Config\Adapter\Yaml
+ * Nest\Translate\Adapter\FileTest
  *
  * @author Tomasz Ślązok <tomek@landingi.com>
  */
-class Yaml extends Config
+class FileTest extends Test
 {
-    public function __construct($path)
+    public function testFileAdapter()
     {
-        parent::__construct(YamlParser::parse($path));
+        $translate = new File(DATA_PATH . '/i18n/en.php');
+
+        $this->assertEquals('hello', $translate->query('word.hello'));
     }
 } 

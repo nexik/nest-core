@@ -1,14 +1,16 @@
 <?php
 /**
-* This file is part of Landingi system (https://landingi.com)
-*
-* @link       https://landingi.com/
-* @copyright  Landingi Sp. z o.o.
-*/
+ * This file is part Phalcon Nest (Phalcon SOLID bootstrap project for RAD)
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ *
+ * @license    MIT
+ */
 
 namespace Nest\Mvc\Router;
 
-use Symfony\Component\Yaml\Parser as Yaml;
+use Symfony\Component\Yaml\Yaml;
 
 /**
  * Nest\Mvc\Router\RoutingParser
@@ -19,26 +21,11 @@ use Symfony\Component\Yaml\Parser as Yaml;
  */
 class RoutingParser 
 {
-    /**
-     * @var \Symfony\Component\Yaml\Parser
-     */
-    private $yaml;
-
-    /**
-     * Constructor
-     *
-     * @param Yaml $yaml
-     */
-    public function __construct(Yaml $yaml)
-    {
-        $this->yaml = $yaml;
-    }
-
     public function parseFromPath($path)
     {
         switch ($this->getExtension($path)) {
             case 'yml':
-                return $this->yaml->parse(file_get_contents($path));
+                return Yaml::parse($path);
             default:
                 return [];
         }

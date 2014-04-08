@@ -11,7 +11,6 @@
 namespace Nest\Config\Adapter;
 
 use Codeception\TestCase\Test;
-use Symfony\Component\Yaml\Parser;
 
 /**
  * Nest\Config\Adapter\YamlTest
@@ -25,7 +24,7 @@ class YamlTest extends Test
     public function testConstructor()
     {
         // Given: Yaml config from _data/config/base.yml
-        $config = new Yaml(DATA_PATH . '/config/base.yml', new Parser());
+        $config = new Yaml(DATA_PATH . '/config/base.yml');
 
         // Then: Expect to config parameter foo be equal to bar
         $this->assertSame('bar', $config->get('foo'));

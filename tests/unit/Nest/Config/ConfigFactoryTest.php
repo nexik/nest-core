@@ -11,7 +11,6 @@
 namespace Nest\Config;
 
 use Codeception\TestCase\Test;
-use Symfony\Component\Yaml\Parser;
 
 /**
  * Nest\Config\ConfigFactoryTest
@@ -25,7 +24,7 @@ class ConfigFactoryTest extends Test
     public function testFactoryIni()
     {
         // Given: ConfigFactory
-        $factory = new ConfigFactory(new Parser());
+        $factory = new ConfigFactory();
 
         // Given: Config build with ConfigFactory from INI file
         $config = $factory->buildFromPath(DATA_PATH . '/config/base.ini');
@@ -40,7 +39,7 @@ class ConfigFactoryTest extends Test
     public function testFactoryYaml()
     {
         // Given: ConfigFactory
-        $factory = new ConfigFactory(new Parser());
+        $factory = new ConfigFactory();
 
         // Given: Config build with ConfigFactory from YML file
         $config = $factory->buildFromPath(DATA_PATH . '/config/base.yml');
@@ -55,7 +54,7 @@ class ConfigFactoryTest extends Test
     public function testFactoryJson()
     {
         // Given: ConfigFactory
-        $factory = new ConfigFactory(new Parser());
+        $factory = new ConfigFactory();
 
         // Given: Config build with ConfigFactory from JSON file
         $config = $factory->buildFromPath(DATA_PATH . '/config/base.json');
@@ -70,7 +69,7 @@ class ConfigFactoryTest extends Test
     public function testFactoryPhp()
     {
         // Given: ConfigFactory
-        $factory = new ConfigFactory(new Parser());
+        $factory = new ConfigFactory();
 
         // Given: Config build with ConfigFactory from PHP file
         $config = $factory->buildFromPath(DATA_PATH . '/config/base.php');

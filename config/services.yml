@@ -1,10 +1,24 @@
 configFactory:
     className: Nest\Config\ConfigFactory
-    arguments:
-        - { type: service, name: yaml }
+    arguments: [@yaml]
+
+config:
+    className: Phalcon\Config
+
+cookies:
+    className:  Phalcon\Http\Response\Cookies
 
 dispatcher:
-    className: Phalcon\Mvc\Dispatcher
+    className: Nest\Mvc\Dispatcher
+
+escaper:
+    className:  Phalcon\Escaper
+
+eventsManager:
+    className:  Phalcon\Events\Manager
+
+registry:
+    className: Nest\Registry
 
 request:
     className: Phalcon\Http\Request
@@ -14,11 +28,20 @@ response:
 
 router:
     className: Phalcon\Mvc\Router
+    arguments: [false]
+    calls:
+        - [setUriSource, [1]]
 
 routingParser:
     className: Nest\Mvc\Router\RoutingParser
-    arguments:
-        - { type: service, name: yaml }
+
+session:
+    className:  Phalcon\Session\Adapter\Files
+    calls:
+        - [start]
+
+url:
+    className: Phalcon\Mvc\Url
 
 view:
     className: Phalcon\Mvc\View

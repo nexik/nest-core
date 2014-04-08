@@ -12,7 +12,7 @@ namespace Nest\Application;
 
 use Nest\Container\ContainerFactory;
 use Phalcon\Config;
-use Phalcon\Mvc\Application;
+use Nest\Application;
 
 /**
  * Nest\Application\Http
@@ -24,95 +24,6 @@ use Phalcon\Mvc\Application;
 class Http extends Application implements ApplicationInterface
 {
     /**
-     * @var \Phalcon\Config
-     */
-    protected $config;
-
-    /**
-     * @var \Nest\Container\ContainerFactory
-     */
-    private $factory;
-
-    /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        $factory   = new ContainerFactory();
-        $container = $factory->build(__DIR__ . '/../../config/services.yml');
-
-        parent::__construct($container);
-
-        $this->config  = new Config();
-        $this->factory = $factory;
-
-        if (method_exists($this, 'configure')) {
-            $this->configure();
-        }
-    }
-
-    /**
-     * Load Config (merge with current one) from given path
-     *
-     * @param $path
-     */
-    public function loadConfig($path)
-    {
-        if ($this->getContainer()->has('cache')) {
-            $cache  = $this->getContainer()->get('cache');
-            $key    = sprintf('config_%s', md5($path));
-            $config = $cache->get($key);
-
-            if (null === $config) {
-                $config = $this->parseConfig($path);
-                $cache->save($key, $config);
-            }
-        } else {
-            $config = $this->parseConfig($path);
-        }
-
-        $this->config->merge($config);
-    }
-
-    public function loadServices($path)
-    {
-        $this->factory->loadServices($this->getContainer(), $path);
-    }
-
-    private function parseConfig($path)
-    {
-        $configFactory = $this->getContainer()->get('configFactory');
-
-        return $configFactory->buildFromPath($path);
-    }
-
-    /**
-     * Load Routing (merge with current one) from given path
-     * @param $path
-     */
-    public function loadRouting($path)
-    {
-        $parser = $this->getContainer()->get('routingParser');
-
-        foreach ($parser->parseFromPath($path) as $name => $definition) {
-            $this->getContainer()
-                ->get('router')
-                ->add($definition['url'], $definition['action'])
-                ->setName($name);
-        }
-    }
-
-    /**
-     * Get dependency injection container
-     *
-     * @return \Phalcon\DI
-     */
-    public function getContainer()
-    {
-        return $this->getDI();
-    }
-
-    /**
      * Run application and output result to the browser
      *
      * @return string
@@ -120,5 +31,46 @@ class Http extends Application implements ApplicationInterface
     public function run()
     {
         echo $this->handle()->getContent();
+    }
+
+    private function handle()
+    {
+        $eventsManager = $this->getContainer()->get('eventsManager');
+        $dispatcher    = $this->getContainer()->get('dispatcher');
+        $router        = $this->getContainer()->get('router');
+        $view          = $this->getContainer()->get('view');
+
+        $eventsManager->fire('application:boot', $this);
+
+        $router->handle();
+        $dispatcher->routing($router);
+
+        $view->start();
+
+        $eventsManager->fire('application:beforeHandleRequest', $this, $dispatcher);
+        $controller = $dispatcher->dispatch();
+
+        $eventsManager->fire('application:afterHandleRequest', $this, $controller);
+
+        if (is_object($controller)) {
+            $eventsManager->fire("application:viewRender", $this, $view);
+
+            $view->render(
+                $dispatcher->getControllerName(),
+                $dispatcher->getActionName(),
+                $dispatcher->getParams()
+            );
+        }
+
+        $view->finish();
+
+        $response = $this->getResponse();
+
+        $eventsManager->fire("application:beforeSendResponse", $this, $response);
+
+        return $response
+            ->setContent($view->getContent())
+            ->sendHeaders()
+            ->sendCookies();
     }
 }

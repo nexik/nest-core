@@ -23,10 +23,4 @@ interface ApplicationInterface
      * @return string|null
      */
     public function run();
-
-    /**
-     * @param $path
-     * @return void
-     */
-    public function loadConfig($path);
 }

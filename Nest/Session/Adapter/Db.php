@@ -14,6 +14,7 @@ namespace Nest\Session\Adapter;
  *
  * Easily injectable version of Phalcon\Session\Adapter\Database
  *
+ * @deprecated
  * @author  Tomasz Ślązok <tomek@sabaki.pl>
  */
 class Db extends \Phalcon\Session\Adapter\Database
@@ -21,8 +22,9 @@ class Db extends \Phalcon\Session\Adapter\Database
     /**
      * Constructor
      *
-     * @param Phalcon\Db\Adapter $db
-     * @param Phalcon\Config $config
+     * @param \Phalcon\Db\Adapter $db
+     * @param \Phalcon\Config     $config
+     * @throws \Phalcon\Session\Exception
      */
     public function __construct($db, $config)
     {

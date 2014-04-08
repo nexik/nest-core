@@ -1,17 +1,19 @@
 <?php
 /**
-* This file is part of Landingi system (https://landingi.com)
-*
-* @link       https://landingi.com/
-* @copyright  Landingi Sp. z o.o.
-*/
+ * This file is part Phalcon Nest (Phalcon SOLID bootstrap project for RAD)
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ *
+ * @license    MIT
+ */
+
 namespace Nest\Config;
 
 use Phalcon\Config;
 use Phalcon\Config\Adapter\Ini as IniAdapter;
 use Phalcon\Config\Adapter\Json as JsonAdapter;
 use Nest\Config\Adapter\Yaml as YamlAdapter;
-use Symfony\Component\Yaml\Parser as Yaml;
 
 /**
  * Nest\Config\ConfigFactory
@@ -22,16 +24,6 @@ use Symfony\Component\Yaml\Parser as Yaml;
  */
 class ConfigFactory 
 {
-    /**
-     * @var \Symfony\Component\Yaml\Parser
-     */
-    private $yaml;
-
-    public function __construct(Yaml $yaml)
-    {
-        $this->yaml = $yaml;
-    }
-
     public function buildFromPath($path)
     {
         switch ($this->getExtension($path)) {
@@ -40,7 +32,7 @@ class ConfigFactory
             case 'json':
                 return new JsonAdapter($path);
             case 'yml':
-                return new YamlAdapter($path, $this->yaml);
+                return new YamlAdapter($path);
             default:
                 return new Config(require $path);
         }
