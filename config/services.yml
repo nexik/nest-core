@@ -1,9 +1,5 @@
 configFactory:
     className: Nest\Config\ConfigFactory
-    arguments: [@yaml]
-
-config:
-    className: Phalcon\Config
 
 cookies:
     className:  Phalcon\Http\Response\Cookies

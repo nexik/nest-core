@@ -26,14 +26,17 @@ class Http extends Application implements ApplicationInterface
     /**
      * Run application and output result to the browser
      *
+     * @param null $uri
      * @return string
      */
-    public function run()
+    public function run($uri = null)
     {
-        echo $this->handle()->getContent();
+        echo $this
+            ->handle($uri)
+            ->getContent();
     }
 
-    private function handle()
+    private function handle($uri)
     {
         $eventsManager = $this->getContainer()->get('eventsManager');
         $dispatcher    = $this->getContainer()->get('dispatcher');
@@ -42,7 +45,7 @@ class Http extends Application implements ApplicationInterface
 
         $eventsManager->fire('application:boot', $this);
 
-        $router->handle();
+        $router->handle($uri);
         $dispatcher->routing($router);
 
         $view->start();
