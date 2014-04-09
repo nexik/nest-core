@@ -10,8 +10,8 @@
 
 namespace Nest\Config;
 
+use Nest\Cache\InternalFile as Cache;
 use Phalcon\Config;
-use Symfony\Component\Filesystem\Filesystem;
 
 /**
  * Nest\Config\ConfigCache
@@ -23,29 +23,36 @@ use Symfony\Component\Filesystem\Filesystem;
 class ConfigCache 
 {
     /**
-     * @var string
+     * @var Cache
      */
-    private $cachePath;
+    private $cache;
 
     /**
      * @var ConfigFactory
      */
     private $factory;
 
+    /**
+     * @var \Phalcon\Config
+     */
+    private $config;
+
     public function __construct(ConfigFactory $factory, $cachePath)
     {
-        $this->cachePath  = $cachePath;
-        $this->factory    = $factory;
-        $this->config     = new Config();
+        $this->factory   = $factory;
+        $this->config    = new Config();
+        $this->cache     = new Cache($cachePath);
     }
 
     public function load($file)
     {
-        $config = $this->getCache($file);
+        $config = $this->cache->get($file);
 
         if (null === $config) {
             $config = $this->factory->buildFromPath($file);
-            $this->setCache($file, $config->toArray());
+            $this->cache->set($file, $config->toArray());
+        } else {
+            $config = new Config($config);
         }
 
         if ($config) {
@@ -58,24 +65,5 @@ class ConfigCache
     public function getConfig()
     {
         return $this->config;
-    }
-
-    private function getCache($file)
-    {
-        $cachePath = $this->cachePath . '/' . md5($file);
-
-        if (file_exists($cachePath)) {
-            return new Config(unserialize(file_get_contents($cachePath)));
-        }
-
-        return null;
-    }
-
-    private function setCache($file, array $array)
-    {
-        $cachePath = $this->cachePath . '/' . md5($file);
-
-        file_put_contents($cachePath, serialize($array));
-        chmod($cachePath, 0777);
     }
 } 

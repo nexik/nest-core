@@ -8,6 +8,7 @@
 
 namespace Nest\Container;
 
+use Nest\Cache\InternalFile as Cache;
 use Symfony\Component\Yaml\Yaml;
 
 /**
@@ -38,7 +39,7 @@ class ServiceCache
     public function __construct(ServiceParser $parser, $cacheDir)
     {
         $this->parser = $parser;
-        $this->cacheDir = $cacheDir;
+        $this->cache = new Cache($cacheDir);
     }
 
     /**
@@ -49,11 +50,11 @@ class ServiceCache
      */
     public function load($path)
     {
-        $services = $this->getCache($path);
+        $services = $this->cache->get($path);
 
         if (null === $services) {
             $services = $this->parser->parseServices(Yaml::parse($path));
-            $this->setCache($path, $services);
+            $this->cache->set($path, $services);
         }
 
         $this->services = array_merge($this->services, $services);
@@ -64,24 +65,5 @@ class ServiceCache
     public function getServices()
     {
         return $this->services;
-    }
-
-    private function getCache($path)
-    {
-        $cachePath = $this->cacheDir . '/services_' . md5($path);
-
-        if (file_exists($cachePath)) {
-            return unserialize(file_get_contents($cachePath));
-        }
-
-        return null;
-    }
-
-    private function setCache($path, $services)
-    {
-        $cachePath = $this->cacheDir . '/services_' . md5($path);
-
-        file_put_contents($cachePath, serialize($services));
-        chmod($cachePath, 0777);
     }
 } 

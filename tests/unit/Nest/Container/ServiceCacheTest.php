@@ -33,8 +33,8 @@ class ServiceCacheTest extends Test
         $this->cacheDir   = DATA_PATH . '/cache/internal';
         $this->servicePath = DATA_PATH . '/config/services.yml';
 
-        if (file_exists($this->cacheDir . '/services_' . md5($this->servicePath))) {
-            unlink($this->cacheDir . '/services_' . md5($this->servicePath));
+        if (file_exists($this->cacheDir . '/' . md5($this->servicePath))) {
+            unlink($this->cacheDir . '/' . md5($this->servicePath));
         }
 
         $this->cache = new ServiceCache(
@@ -58,6 +58,6 @@ class ServiceCacheTest extends Test
 
         $this->assertCount(1, $services);
         $this->assertArrayHasKey('foo', $services);
-        $this->assertFileExists($this->cacheDir . '/services_' . md5($this->servicePath));
+        $this->assertFileExists($this->cacheDir . '/' . md5($this->servicePath));
     }
 } 
