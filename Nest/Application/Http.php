@@ -42,6 +42,7 @@ class Http extends Application implements ApplicationInterface
         $dispatcher    = $this->getContainer()->get('dispatcher');
         $router        = $this->getContainer()->get('router');
         $view          = $this->getContainer()->get('view');
+        $uri           = explode("?", $uri)[0];
 
         $eventsManager->fire('application:boot', $this);
 
