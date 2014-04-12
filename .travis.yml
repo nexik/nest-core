@@ -9,12 +9,12 @@ before_install:
     - sudo apt-get install php5-dev
 
 before_script:
-    - composer self-update
-    - composer install
     - git clone -q --branch=1.2.6 https://github.com/phalcon/cphalcon.git
     - (cd cphalcon/ext; export CFLAGS="-g3 -O1 -fno-delete-null-pointer-checks -Wall"; phpize && ./configure --enable-phalcon && make -j2 && sudo make install && phpenv config-add ../unit-tests/ci/phalcon.ini)
     - ulimit -c unlimited || true
     - phpenv rehash
+    - composer self-update
+    - composer install
 
 script:
     - vendor/bin/codecept run unit --coverage --xml --html
