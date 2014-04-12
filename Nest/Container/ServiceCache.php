@@ -27,9 +27,9 @@ class ServiceCache
     private $parser;
 
     /**
-     * @var string
+     * @var Cache
      */
-    private $cacheDir;
+    private $cache;
 
     /**
      * @var array
