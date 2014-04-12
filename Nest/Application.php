@@ -102,6 +102,14 @@ abstract class Application
     }
 
     /**
+     * @return \Phalcon\Events\ManagerInterface
+     */
+    protected function getEventManager()
+    {
+        return $this->getContainer()->get('eventsManager');
+    }
+
+    /**
      * Initialize application settings base on reflection
      *
      * Set Path to folder where application is run

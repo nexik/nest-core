@@ -12,6 +12,7 @@ namespace Nest\Application;
 
 use Nest\Container\ContainerFactory;
 use Phalcon\Config;
+use Phalcon\Mvc\View;
 use Nest\Application;
 
 /**
@@ -26,8 +27,8 @@ class Http extends Application implements ApplicationInterface
     /**
      * Run application and output result to the browser
      *
-     * @param null $uri
-     * @return string
+     * @param string $uri
+     * @return void
      */
     public function run($uri = null)
     {
@@ -36,24 +37,48 @@ class Http extends Application implements ApplicationInterface
             ->getContent();
     }
 
+    /**
+     * @param $uri
+     * @return \Phalcon\Http\Response
+     */
     private function handle($uri)
     {
-        $eventsManager = $this->getContainer()->get('eventsManager');
-        $dispatcher    = $this->getContainer()->get('dispatcher');
-        $router        = $this->getContainer()->get('router');
-        $view          = $this->getContainer()->get('view');
-        $uri           = explode("?", $uri)[0];
+        $this->getEventManager()->fire('application:boot', $this);
 
-        $eventsManager->fire('application:boot', $this);
+        return $this
+            ->handleRouting($uri)
+            ->handleView()
+            ->sendResponse();
+    }
 
-        $router->handle($uri);
-        $dispatcher->routing($router);
+    /**
+     * @param $uri
+     * @return \Nest\Application\Http
+     */
+    private function handleRouting($uri)
+    {
+        // get rid GET parameters from URI
+        $uri = explode("?", $uri)[0];
+
+        $this->getRouter()->handle($uri);
+        $this->getDispatcher()->routing($this->getRouter());
+
+        return $this;
+    }
+
+    /**
+     * @return \Nest\Application\Http
+     */
+    private function handleView()
+    {
+        $eventsManager = $this->getEventManager();
+        $dispatcher    = $this->getDispatcher();
+        $view          = $this->getView();
 
         $view->start();
 
         $eventsManager->fire('application:beforeHandleRequest', $this, $dispatcher);
         $controller = $dispatcher->dispatch();
-
         $eventsManager->fire('application:afterHandleRequest', $this, $controller);
 
         if (is_object($controller)) {
@@ -68,12 +93,18 @@ class Http extends Application implements ApplicationInterface
 
         $view->finish();
 
-        $response = $this->getResponse();
+        return $this;
+    }
 
-        $eventsManager->fire("application:beforeSendResponse", $this, $response);
+    /**
+     * @return \Phalcon\Http\ResponseInterface
+     */
+    private function sendResponse()
+    {
+        $this->getEventManager()->fire("application:beforeSendResponse", $this, $this->getResponse());
 
-        return $response
-            ->setContent($view->getContent())
+        return $this->getResponse()
+            ->setContent($this->getView()->getContent())
             ->sendHeaders()
             ->sendCookies();
     }
