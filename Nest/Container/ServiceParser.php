@@ -51,19 +51,14 @@ class ServiceParser
     private function parseDefinition($definition)
     {
         if (is_array($definition)) {
-            $parsedDefinition = ['className' => $definition['className']];
+            $parsedDefinition = [
+                'className' => $definition['className'],
+                'arguments' => $this->parseDefinitionArguments($definition),
+                'calls'     => $this->parseDefinitionCalls($definition),
+            ];
 
-            if (isset($definition['arguments'])) {
-                foreach ($definition['arguments'] as $value) {
-                    $parsedDefinition['arguments'][] = $this->parseDefinitionArgument($value);
-                }
-            }
-
-            if (isset($definition['calls'])) {
-                foreach($definition['calls'] as $call) {
-                    $parsedDefinition['calls'][] = $this->parseCallDefinition($call);
-                }
-            }
+            $this->clearEmptyDefinition($parsedDefinition, 'arguments');
+            $this->clearEmptyDefinition($parsedDefinition, 'calls');
 
             return $parsedDefinition;
         } else {
@@ -73,15 +68,40 @@ class ServiceParser
 
     private function parseCallDefinition($call)
     {
-        $definition = ['method' => $call[0]];
+        $definition = [
+            'method'    => $call[0],
+            'arguments' => $this->parseDefinitionArguments($call, 1),
+        ];
 
-        if (isset($call[1])) {
-            foreach ($call[1] as $argument) {
-                $definition['arguments'][] = $this->parseDefinitionArgument($argument);
+        $this->clearEmptyDefinition($definition, 'arguments');
+
+        return $definition;
+    }
+
+    private function parseDefinitionArguments($definition, $index = 'arguments')
+    {
+        $arguments = [];
+
+        if (isset($definition[$index])) {
+            foreach ($definition[$index] as $value) {
+                $arguments[] = $this->parseDefinitionArgument($value);
             }
         }
 
-        return $definition;
+        return $arguments;
+    }
+
+    private function parseDefinitionCalls($definition)
+    {
+        $calls = [];
+
+        if (isset($definition['calls'])) {
+            foreach($definition['calls'] as $call) {
+                $calls[] = $this->parseCallDefinition($call);
+            }
+        }
+
+        return $calls;
     }
 
     private function parseDefinitionArgument($argument)
@@ -101,6 +121,13 @@ class ServiceParser
                 'type'  => 'parameter',
                 'value' => $argument,
             ];
+        }
+    }
+
+    private function clearEmptyDefinition(&$definition, $key)
+    {
+        if (array_key_exists($key, $definition) && 0 === count($definition[$key])) {
+            unset($definition[$key]);
         }
     }
 } 
