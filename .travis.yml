@@ -15,7 +15,6 @@ before_script:
     - phpenv rehash
     - composer self-update
     - composer install
-    - chmod 777 tests/_log
 
 script:
     - vendor/bin/codecept run unit --coverage --xml --html
