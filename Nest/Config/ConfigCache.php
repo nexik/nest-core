@@ -37,6 +37,9 @@ class ConfigCache
      */
     private $config;
 
+    /**
+     * @param string $cachePath
+     */
     public function __construct(ConfigFactory $factory, $cachePath)
     {
         $this->factory   = $factory;
@@ -44,6 +47,9 @@ class ConfigCache
         $this->cache     = new Cache($cachePath);
     }
 
+    /**
+     * @param string $file
+     */
     public function load($file)
     {
         $config = $this->cache->get($file);
