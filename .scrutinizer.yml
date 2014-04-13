@@ -1,3 +1,5 @@
+imports:
+    - php
 filter:
     excluded_paths: [vendor/*, tests/*]
 tools:
