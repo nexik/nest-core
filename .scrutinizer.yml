@@ -1,5 +1,4 @@
 filter:
     excluded_paths: [vendor/*, tests/*]
 tools:
-    external_code_coverage:
-        timeout: 1800
+    external_code_coverage: true
