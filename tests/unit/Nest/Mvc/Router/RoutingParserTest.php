@@ -10,7 +10,6 @@
 namespace Nest\Mvc\Router;
 
 use Codeception\TestCase\Test;
-use Symfony\Component\Yaml\Parser as YamlParser;
 
 /**
  * Nest\Mvc\Router\RoutingParserTest
@@ -21,11 +20,19 @@ use Symfony\Component\Yaml\Parser as YamlParser;
  */
 class RoutingParserTest extends Test
 {
-    public function testParseFromPath()
+    public function testParseYaml()
     {
-        $parser = new RoutingParser(new YamlParser());
+        $parser = new RoutingParser();
         $routes = $parser->parseFromPath(DATA_PATH . '/config/routing.yml');
 
         $this->assertArrayHasKey('fileDownload', $routes);
+    }
+
+    public function testParseUnsupported()
+    {
+        $parser = new RoutingParser();
+        $routes = $parser->parseFromPath(DATA_PATH . '/config/routing.unsupported');
+
+        $this->assertCount(0, $routes);
     }
 } 
