@@ -1,7 +1,5 @@
 filter:
     excluded_paths: [vendor/*, tests/*]
-before_commnads:
-    - 'composer install --dev --prefer_source'
 tools:
     external_code_coverage:
         timeout: 1000
