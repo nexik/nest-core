@@ -10,9 +10,6 @@
 
 namespace Nest\Application;
 
-use Nest\Container\ContainerFactory;
-use Phalcon\Config;
-use Phalcon\Mvc\View;
 use Nest\Application;
 
 /**
@@ -38,7 +35,7 @@ class Http extends Application implements ApplicationInterface
     }
 
     /**
-     * @param $uri
+     * @param string|null $uri
      * @return \Phalcon\Http\Response
      */
     private function handle($uri)

@@ -35,7 +35,7 @@ class Arr
      *     $colors = Arr::path($array, array('theme', '*', 'color'));
      *
      * @param   array  $array     array to search
-     * @param   mixed  $path      key path string (delimiter separated) or array of keys
+     * @param   string  $path      key path string (delimiter separated) or array of keys
      * @param   mixed  $default   default value if the path is not set
      * @param   string $delimiter key path delimiter
      * @return  mixed

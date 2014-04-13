@@ -36,6 +36,9 @@ class ServiceCache
      */
     private $services = [];
 
+    /**
+     * @param string $cacheDir
+     */
     public function __construct(ServiceParser $parser, $cacheDir)
     {
         $this->parser = $parser;
@@ -43,7 +46,7 @@ class ServiceCache
     }
 
     /**
-     * @param $path
+     * @param string $path
      * @return $this
      * @throws \Symfony\Component\Yaml\Exception\ParseException
      * @throws \Exception

@@ -12,7 +12,6 @@ namespace Nest\Container;
 use Nest\Arr;
 use Phalcon\Config;
 use Phalcon\Text;
-use Symfony\Component\Yaml\Yaml;
 
 /**
  * Nest\Container\ServiceParser
@@ -124,6 +123,9 @@ class ServiceParser
         }
     }
 
+    /**
+     * @param string $key
+     */
     private function clearEmptyDefinition(&$definition, $key)
     {
         if (array_key_exists($key, $definition) && 0 === count($definition[$key])) {
