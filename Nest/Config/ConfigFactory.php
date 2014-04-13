@@ -24,6 +24,9 @@ use Nest\Config\Adapter\Yaml as YamlAdapter;
  */
 class ConfigFactory 
 {
+    /**
+     * @param string $path
+     */
     public function buildFromPath($path)
     {
         switch ($this->getExtension($path)) {
