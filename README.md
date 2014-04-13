@@ -6,4 +6,4 @@ Nest
 
 Core for Phalcon Web Plugin in Nest Standard Project
 
-Currently in alfa stage everything can be changed. Do not use in Production enviroment
+Currently in alfa stage everything can be changed. Do not use in Production enviroment.
