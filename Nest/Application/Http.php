@@ -49,7 +49,7 @@ class Http extends Application implements ApplicationInterface
     }
 
     /**
-     * @param $uri
+     * @param string|null $uri
      * @return \Nest\Application\Http
      */
     private function handleRouting($uri)

@@ -22,13 +22,16 @@ class InternalFile
      */
     private $path;
 
+    /**
+     * @param string $path
+     */
     public function __construct($path)
     {
         $this->path = $path;
     }
 
     /**
-     * @param $key
+     * @param string $key
      * @return mixed
      */
     public function get($key)
@@ -41,7 +44,7 @@ class InternalFile
     }
 
     /**
-     * @param       $key
+     * @param       string $key
      * @param mixed $data
      */
     public function set($key, $data)
