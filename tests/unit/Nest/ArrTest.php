@@ -73,5 +73,12 @@ class ArrTest extends Test
                 ['users.2', 'sam'],
             ]]
         );
+
+        $this->specify(
+            'Return null when next dimension level not exists and default value is not given',
+            function () use ($array) {
+                expect(Arr::path($array, 'multi.first.johny'))->null();
+            }
+        );
     }
 } 
