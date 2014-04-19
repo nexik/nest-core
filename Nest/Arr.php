@@ -20,6 +20,8 @@ namespace Nest;
  */
 class Arr
 {
+    private static $delimeter = '.';
+
     /**
      * Gets a value from an array using a dot separated path.
      *
@@ -37,80 +39,42 @@ class Arr
      * @param   array  $array     array to search
      * @param   string  $path      key path string (delimiter separated) or array of keys
      * @param   mixed  $default   default value if the path is not set
-     * @param   string $delimiter key path delimiter
      * @return  mixed
      */
-    public static function path($array, $path, $default = null, $delimiter = '.')
+    public static function path($array, $path, $default = null)
     {
-        if (false === is_array($array)) {
-            // This is not an array!
-            return $default;
+        if (array_key_exists($path, $array)) {
+            return $array[$path];
         }
 
-        if (is_array($path)) {
-            // The path has already been separated into keys
-            $keys = $path;
-        } else {
-            if (array_key_exists($path, $array)) {
-                // No need to do extra processing
-                return $array[$path];
-            }
+        // Remove starting and ending delimiters and spaces
+        $path = trim($path, ' ' . self::$delimeter);
 
-            // Remove starting delimiters and spaces
-            $path = ltrim($path, "{$delimiter} ");
-
-            // Remove ending delimiters, spaces, and wildcards
-            $path = rtrim($path, "{$delimiter} *");
-
-            // Split the keys by delimiter
-            $keys = explode($delimiter, $path);
-        }
+        // Split the keys by delimiter
+        $keys = explode(self::$delimeter, $path);
 
         do {
             $key = array_shift($keys);
 
+            // Check if key is integer
             if (ctype_digit($key)) {
-                // Make the key an integer
-                $key = (int)$key;
+                $key = (int) $key;
             }
 
             if (isset($array[$key])) {
                 if ($keys) {
+                    // Dig down into the next part of the path if possible
                     if (is_array($array[$key])) {
-                        // Dig down into the next part of the path
                         $array = $array[$key];
                     } else {
-                        // Unable to dig deeper
-                        break;
+                        return $default;
                     }
                 } else {
-                    // Found the path requested
                     return $array[$key];
                 }
-            } elseif ($key === '*') {
-                // Handle wildcards
-
-                $values = array();
-                foreach ($array as $arr) {
-                    if ($value = self::path($arr, implode('.', $keys))) {
-                        $values[] = $value;
-                    }
-                }
-
-                if ($values) {
-                    // Found the values requested
-                    return $values;
-                } else {
-                    // Unable to dig deeper
-                    break;
-                }
             } else {
-                // Unable to dig deeper
-                break;
+                return $default;
             }
         } while ($keys);
-
-        // Unable to find the value requested
-        return $default;
     }
 } 

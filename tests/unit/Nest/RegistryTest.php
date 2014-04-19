@@ -11,6 +11,7 @@
 namespace Nest;
 
 use Codeception\TestCase\Test;
+use Codeception\Specify;
 
 /**
  * Nest\RegistryTest
@@ -19,19 +20,33 @@ use Codeception\TestCase\Test;
  */
 class RegistryTest extends Test
 {
-    public function testGetNonExistedKey()
+    use Specify;
+
+    public function testRegistry()
     {
         $registry = new Registry();
 
-        $this->assertNull($registry->get('non_existed'));
+        $this->specify(
+            'Return null for non existed key',
+            function () use ($registry)  {
+                expect($registry->get('non_existed'))->null();
+            }
+        );
+
+        $this->specify(
+            'Return default value for non existed key if default is set',
+            function () use ($registry) {
+                expect($registry->get('non_existed', 'default'))->equals('default');
+            }
+        );
+
+        $this->specify(
+            'Return data that was stored before',
+            function () use ($registry) {
+                $registry->set('key', 'value');
+
+                expect($registry->get('key'))->equals('value');
+            }
+        );
     }
-
-    public function testStoringData()
-    {
-        $registry = new Registry();
-        $registry->set('key', 'value');
-
-        $this->assertEquals('value', $registry->get('key'));
-    }
-
 } 
