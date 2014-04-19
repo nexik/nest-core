@@ -28,16 +28,8 @@ class Arr
      *     // Get the value of $array['foo']['bar']
      *     $value = Arr::path($array, 'foo.bar');
      *
-     * Using a wildcard "*" will search intermediate arrays and return an array.
-     *
-     *     // Get the values of "color" in theme
-     *     $colors = Arr::path($array, 'theme.*.color');
-     *
-     *     // Using an array of keys
-     *     $colors = Arr::path($array, array('theme', '*', 'color'));
-     *
      * @param   array  $array     array to search
-     * @param   string  $path      key path string (delimiter separated) or array of keys
+     * @param   string $path      key path string (delimiter separated) or array of keys
      * @param   mixed  $default   default value if the path is not set
      * @return  mixed
      */
