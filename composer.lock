@@ -3,7 +3,7 @@
         "This file locks the dependencies of your project to a known state",
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
     ],
-    "hash": "d7e7c8ff841d04c62de8afd4a8fff8eb",
+    "hash": "0d70bd490748d1f30f9fc9fc08d8834f",
     "packages": [
         {
             "name": "phalcon/incubator",

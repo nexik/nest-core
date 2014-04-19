@@ -13,7 +13,7 @@ before_script:
     - ulimit -c unlimited || true
     - phpenv rehash
     - composer self-update
-    - composer install
+    - composer install --dev
 
 script:
     - vendor/bin/codecept run unit --coverage --xml --html

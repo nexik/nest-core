@@ -11,6 +11,7 @@
 namespace Nest\Translate\Adapter;
 
 use Codeception\TestCase\Test;
+use Codeception\Specify;
 
 /**
  * Nest\Translate\Adapter\FileTest
@@ -19,10 +20,17 @@ use Codeception\TestCase\Test;
  */
 class FileTest extends Test
 {
+    use Specify;
+
     public function testFileAdapter()
     {
         $translate = new File(DATA_PATH . '/i18n/en.php');
 
-        $this->assertEquals('hello', $translate->query('word.hello'));
+        $this->specify(
+            'Adapter will load translations from php file that return array with key, value pairs',
+            function () use ($translate) {
+                expect($translate->query('word.hello'))->equals('hello');
+            }
+        );
     }
 } 

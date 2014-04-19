@@ -22,9 +22,6 @@
         "phalcon/devtools":          "1.3.*@dev",
         "squizlabs/php_codesniffer": "1.*"
     },
-    "config": {
-        "bin-dir": "bin"
-    },
     "autoload": {
         "psr-4": {
             "Nest\\" : "Nest"
