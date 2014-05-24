@@ -7,19 +7,14 @@
  *
  * @license    MIT
  */
-namespace Nest\Translate\Adapter;
-
-use Phalcon\Translate\Adapter\NativeArray;
+namespace Nest\Container\Service\Parser;
 
 /**
- * Nest\Translate\Adapter\File
+ * Interface Parser
  *
  * @author Tomasz Ślązok <tomek@sabaki.pl>
  */
-class File extends NativeArray
+interface Parser
 {
-    public function __construct($file)
-    {
-        parent::__construct(['content' => include $file]);
-    }
-}
+    public function parse($definition);
+} 

@@ -1,21 +1,19 @@
 <?php
 /**
- * This file is part Phalcon Nest (Phalcon SOLID bootstrap project for RAD)
+ * This file is part Nest Core
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  *
  * @license    MIT
  */
-
 namespace Nest;
 
 /**
  * Registry
  *
- * @author Tomasz Ślązok <tomek@landingi.com>
+ * @author Tomasz Ślązok <tomek@sabaki.pl>
  */
-
 class Registry
 {
     /**

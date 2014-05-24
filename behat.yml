@@ -1,0 +1,8 @@
+default:
+    suites:
+        utils:
+            paths:    [ %paths.base%/features/utils ]
+            contexts: [ UtilContext ]
+        mvc:
+            paths:    [ %paths.base%/features/mvc ]
+            contexts: [ MvcContext ]

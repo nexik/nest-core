@@ -1,26 +1,31 @@
 {
     "name": "nexik/nest-core",
-    "description": "Nest core library for RAD with Phalcon framework",
+    "description": "Core of Web Plugin for Nest Application",
     "version": "0.0.1",
     "license": "MIT",
     "authors": [
         {
             "name":  "Tomasz Ślązok",
-            "email": "tomek@landingi.com",
+            "email": "tomek@sabaki.pl",
             "role":  "Developer"
         }
     ],
+    "require-dev": {
+        "behat/behat":               "~3.0",
+        "bossa/phpspec2-expect":     "*",
+        "phalcon/devtools":          "1.3.*@dev",
+        "phpspec/phpspec":           "~2.0",
+        "phpspec/prophecy":          "~1.0",
+        "squizlabs/php_codesniffer": "~1.0"
+    },
     "require": {
         "phalcon/incubator":  "dev-master",
         "symfony/filesystem": "2.4.*",
-        "symfony/yaml":       "2.4.*"
+        "symfony/yaml":       "2.4.*",
+        "ohanzee/helpers":    "dev-master"
     },
-    "require-dev": {
-        "codeception/codeception":   "*",
-        "codeception/specify":       "*",
-        "codeception/verify":        "*",
-        "phalcon/devtools":          "1.3.*@dev",
-        "squizlabs/php_codesniffer": "1.*"
+    "config": {
+        "bin-dir": "bin"
     },
     "autoload": {
         "psr-4": {

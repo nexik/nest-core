@@ -28,6 +28,7 @@ router:
 
 routingParser:
     className: Nest\Mvc\Router\RoutingParser
+    arguments: [@yaml]
 
 session:
     className:  Phalcon\Session\Adapter\Files
@@ -39,3 +40,6 @@ url:
 
 view:
     className: Phalcon\Mvc\View
+
+yaml:
+    className:

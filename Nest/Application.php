@@ -1,13 +1,12 @@
 <?php
 /**
- * This file is part Phalcon Nest (Phalcon SOLID bootstrap project for RAD)
+ * This file is part Nest Core
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  *
  * @license    MIT
  */
-
 namespace Nest;
 
 use Nest\Config\ConfigCache;
@@ -20,9 +19,9 @@ use Phalcon\DI as Container;
 /**
  * Nest\Application
  *
- * Abstract application with all code for managing enviroment
+ * Abstract application with all code for managing enviroments
  *
- * @author Tomasz Ślązok <tomek@landingi.com>
+ * @author Tomasz Ślązok <tomek@sabaki.pl>
  */
 abstract class Application
 {
@@ -58,7 +57,10 @@ abstract class Application
         $this->config    = $this->buildConfig();
         $this->container = $this->buildContainer();
 
-        $this->initializeRouting();
+        $this
+            ->getRouter()
+            ->setDefaultNamespace($this->namespace . '\Controller')
+            ->load($this->getConfigPath() . '/routing.yml');
     }
 
     /**
@@ -194,18 +196,15 @@ abstract class Application
 
     private function initializeRouting()
     {
-        $router = $this->getRouter();
-        $router->setDefaultNamespace($this->namespace . '\Controller');
-
-        $routes = $this->getContainer()
-            ->get('routingParser')
-            ->parseFromPath($this->getConfigPath() . '/routing.yml');
-
-        foreach ($routes as $name => $definition) {
-            $router
-                ->add($definition['url'], $definition['action'])
-                ->setName($name);
-        }
+//        $routes = $this->getContainer()
+//            ->get('routingParser')
+//            ->parseFromPath();
+//
+//        foreach ($routes as $name => $definition) {
+//            $router
+//                ->add($definition['url'], $definition['action'])
+//                ->setName($name);
+//        }
     }
 
 }

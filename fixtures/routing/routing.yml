@@ -1,0 +1,3 @@
+fileDownload:
+    url: /file/{hash}/{file}.{extension}
+    action: Asset::fileDownload

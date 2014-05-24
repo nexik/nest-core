@@ -1,14 +1,16 @@
 <?php
 /**
-* This file is part of Landingi system (https://landingi.com)
-*
-* @link       https://landingi.com/
-* @copyright  Landingi Sp. z o.o.
-*/
-
+ * This file is part Nest Core
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ *
+ * @license    MIT
+ */
 namespace Nest\Container;
 
 use Nest\Cache\InternalFile as Cache;
+use Nest\Container\Service\Parser;
 use Symfony\Component\Yaml\Yaml;
 
 /**
@@ -17,12 +19,12 @@ use Symfony\Component\Yaml\Yaml;
  * Cache decorator for service parser with ability to merging definitions from
  * many sources
  *
- * @author Tomasz Ślązok <tomek@landingi.com>
+ * @author Tomasz Ślązok <tomek@sabaki.pl>
  */
 class ServiceCache 
 {
     /**
-     * @var ServiceParser
+     * @var Service\Parser
      */
     private $parser;
 
@@ -37,9 +39,10 @@ class ServiceCache
     private $services = [];
 
     /**
-     * @param string $cacheDir
+     * @param Service\Parser $parser
+     * @param string         $cacheDir
      */
-    public function __construct(ServiceParser $parser, $cacheDir)
+    public function __construct(Parser $parser, $cacheDir)
     {
         $this->parser = $parser;
         $this->cache = new Cache($cacheDir);

@@ -1,11 +1,12 @@
 <?php
 /**
-* This file is part of Landingi system (https://landingi.com)
-*
-* @link       https://landingi.com/
-* @copyright  Landingi Sp. z o.o.
-*/
-
+ * This file is part Nest Core
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ *
+ * @license    MIT
+ */
 namespace Nest\Mvc;
 
 use Phalcon\Mvc\Router;
@@ -13,7 +14,7 @@ use Phalcon\Mvc\Router;
 /**
  * Nest\Mvc\Dispatcher
  *
- * @author Tomasz Ślązok <tomek@landingi.com>
+ * @author Tomasz Ślązok <tomek@sabaki.pl>
  */
 class Dispatcher extends \Phalcon\Mvc\Dispatcher
 {
